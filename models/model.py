@@ -48,7 +48,7 @@ def prepare_target(sentiments):
       target.append([0.0,0.0,1.0])
   return torch.tensor(target)
 
-file = "comments.csv"
+file = "../data/external/comments.csv"
 df = pd.read_csv(file)
 df = df.dropna()
 df = df[0:100]
