@@ -1,15 +1,11 @@
 import numpy as np 
 import pandas as pd 
 import torch
-import torch.utils.data as data
 import torch.nn as nn
 import torch.optim as optim
-from transformers import DistilBertModel, BertConfig, DistilBertTokenizer
+from transformers import DistilBertModel, DistilBertTokenizer
 from types import SimpleNamespace
-from torch.utils.data import DataLoader
 import os
-import csv
-from transformers import AutoModel, AutoTokenizer
 from sklearn.model_selection import train_test_split
 import mlflow
 
