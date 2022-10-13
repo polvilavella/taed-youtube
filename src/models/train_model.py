@@ -43,7 +43,7 @@ class Loader(torch.utils.data.Dataset):
     return data, target
 
   def __len__(self):
-        return len(self.target)
+    return len(self.target)
 
 
 class DistilBERTforSentiment(nn.Module):
