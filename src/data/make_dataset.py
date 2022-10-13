@@ -1,30 +1,40 @@
 # -*- coding: utf-8 -*-
-import click
 import logging
-from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
+import pandas as pd
+import emoji
+import re
 
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
+def clean_data(df_raw):
+    """TODO: finish documentation"""
+    df_clean = df_raw.dropna().reset_index(drop=True)
+
+    for idx, row in df_clean.iterrows():
+        text = row['Comment']
+        text_clean = emoji.demojize(text, delimiters=(" ", " "))
+        text_clean = re.sub(' +', ' ', text_clean)
+        df_clean.loc[idx,'Comment'] = text_clean
+
+    return df_clean
+
+
+def main():
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
+    data_raw = "../../data/raw/comments.csv"
 
+    df_raw = pd.read_csv(data_raw, index_col=0)
+    df_clean = clean_data(df_raw)
+
+    data_processed = "../../data/processed/comments.csv"
+    df_clean.to_csv(data_processed)
+    
 
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_fmt)
-
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
-
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
 
     main()
