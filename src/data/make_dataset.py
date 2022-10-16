@@ -3,17 +3,21 @@ import logging
 import pandas as pd
 import emoji
 import re
+import string
 
 
-def clean_data(df_raw):
-    """TODO: finish documentation"""
+def clean_data(df_raw, text_col='Comment'):
+    """Given a dataframe and a text column, """
     df_clean = df_raw.dropna().reset_index(drop=True)
 
     for idx, row in df_clean.iterrows():
-        text = row['Comment']
+        text = row[text_col]
         text_clean = emoji.demojize(text, delimiters=(" ", " "))
+        text_clean = text_clean.translate(str.maketrans('', '', string.punctuation))
+        text_clean = text_clean.replace("\n", " ")
+        text_clean = text_clean.replace("\r", " ")
         text_clean = re.sub(' +', ' ', text_clean)
-        df_clean.loc[idx,'Comment'] = text_clean
+        df_clean.loc[idx,text_col] = text_clean
 
     return df_clean
 
@@ -27,9 +31,9 @@ def main():
     logger.info('making final data set from raw data...')
     
     data_raw = "../../data/raw/comments.csv"
-    df_raw = pd.read_csv(data_raw, index_col=0)
+    df_raw = pd.read_csv(data_raw, index_col=0, sep=',')
     
-    df_clean = clean_data(df_raw)
+    df_clean = clean_data(df_raw, text_col='Comment')
 
     logger.info('final data set created')
 

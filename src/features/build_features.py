@@ -21,7 +21,7 @@ def prepare_target(sentiments):
 
 def preprocess(data_clean='../../data/processed/comments_clean.csv', text_col='Comments', target_col='Sentiment'):
     """TODO: finish documentation"""
-    df_clean = pd.read_csv(data_clean, index_col=0)
+    df_clean = pd.read_csv(data_clean, index_col=0, sep=',')
     comments = df_clean[text_col].tolist()  # The tokenizer recieves a list as input
     target = prepare_target(df_clean[target_col])
 
