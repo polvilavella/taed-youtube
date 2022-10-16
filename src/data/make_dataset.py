@@ -23,13 +23,17 @@ def main():
         cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    
+    logger.info('making final data set from raw data...')
+    
     data_raw = "../../data/raw/comments.csv"
-
     df_raw = pd.read_csv(data_raw, index_col=0)
+    
     df_clean = clean_data(df_raw)
 
-    data_processed = "../../data/processed/comments.csv"
+    logger.info('final data set created')
+
+    data_processed = "../../data/processed/comments_clean.csv"
     df_clean.to_csv(data_processed)
     
 
