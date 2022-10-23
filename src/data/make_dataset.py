@@ -5,10 +5,10 @@
 import os
 import logging
 import re
-import string
 import pandas as pd
 import emoji
 from langdetect import detect
+from langdetect.lang_detect_exception import LangDetectException
 
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ def clean_data(df_raw, text_col='Comment'):
     # Clean the text
     for idx, row in df_clean.iterrows():
         text = row[text_col]
-        
+
         # Remove special characters
         text_clean = text.translate(str.maketrans('', '', '#$%&()*+<=>?@[\\]^_`{|}~'))
         text_clean = text_clean.replace("\"", " ")
@@ -36,15 +36,15 @@ def clean_data(df_raw, text_col='Comment'):
 
         try:
             language = detect(text_clean)
-        except:
+        except LangDetectException:
             language = 'error'
         # If the text is in English, then keep the row
         if language == 'en':
             ids_en.append(idx)
-        
+
         # Translate emojis to text
         text_clean = emoji.demojize(text_clean, delimiters=(" ", " "))
-        
+
         df_clean.loc[idx,text_col] = text_clean
 
     df_clean = df_clean[df_clean.index.isin(ids_en)].reset_index(drop=True)
