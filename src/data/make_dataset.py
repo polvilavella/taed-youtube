@@ -16,9 +16,15 @@ logger = logging.getLogger(__name__)
 
 def clean_data(df_raw, text_col='Comment'):
     """ Given a dataframe and a text column, treats the text column of the dataframe and keeps
-        only English text.
+        only English text with positive or negative sentiment, but not neutral.
     """
-    df_clean = df_raw.dropna().reset_index(drop=True)
+    df_0 = df_raw[df_raw['Sentiment'] == 0]
+    # df_1 = df_raw[df_raw['Sentiment'] == 1]
+    df_2 = df_raw[df_raw['Sentiment'] == 2]
+    length = min(len(df_0), len(df_2))
+
+    df_clean = pd.concat([df_0.sample(n=length),df_2.sample(n=length)])
+    df_clean = df_clean.dropna().reset_index(drop=True)
     ids_en = []
     # Clean the text
     for idx, row in df_clean.iterrows():
