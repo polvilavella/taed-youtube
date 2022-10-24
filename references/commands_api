@@ -1,0 +1,16 @@
+curl -u alumne:sentimentales alumne@10.4.41.37
+
+uvicorn predict:app --host 10.4.41.37 --port 5000 --reload &
+
+
+curl -u alumne:sentimentales
+
+curl --anyauth -u alumne:sentimentales -X POST "http://10.4.41.37:5000/predict/Bad%20Video" -H 'accept: application/json'
+
+curl --anyauth -u alumne:sentimentales -X POST "http://10.4.41.37:5000/predict/The%20video%20was%20horrible,%20awful%20creator" -H 'accept: application/json'
+
+curl --anyauth -u alumne:sentimentales -X POST "http://10.4.41.37:5000/predict/The%20video%20was%20amazing,%incredible%20creator" -H 'accept: application/json'
+
+curl --anyauth -u alumne:sentimentales -X POST "http://10.4.41.37:5000/predict/The%20video%20was%20ok" -H 'accept: application/json'
+
+curl --anyauth -u alumne:sentimentales -X POST "http://10.4.41.37:5000/predict/The%20video%20was%20ok" -H 'accept: application/json'
