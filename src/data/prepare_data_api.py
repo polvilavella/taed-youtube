@@ -1,7 +1,9 @@
+
+""" Module to prepare the data for the API calls. """
+
 import torch
-import torch.nn as nn
+from torch import nn
 from transformers import DistilBertModel, DistilBertTokenizer
-from torch.utils.data import DataLoader
 
 
 MODEL = "distilbert-base-cased"
@@ -11,6 +13,7 @@ tokenizer = DistilBertTokenizer.from_pretrained(MODEL, max_length=512, padding=T
 
 
 class DistilBERTforSentiment(nn.Module):
+    """ Neural Network definition. """
     def __init__(self, adapter_hidden_size=32):
         super().__init__()
 
@@ -34,6 +37,7 @@ class DistilBERTforSentiment(nn.Module):
 
 
     def forward(self, inputs):
+        """ Forward step of the model. """
         outputs = self.distilbert(input_ids = inputs, return_dict=False)
         # B x seq_length x H
         x = self.adaptor(outputs[0])
@@ -46,12 +50,14 @@ class DistilBERTforSentiment(nn.Module):
 
 
 def model():
+    """ Function to get the model. """
     model = DistilBERTforSentiment(adapter_hidden_size=32)
     return model
 
 
 
 class Loader(torch.utils.data.Dataset):
+    """ Data preparation. """
     def __init__(self, comments):
         self.data = tokenizer(comments, padding=True, truncation = True,
                               max_length=512,return_tensors="pt")['input_ids']
@@ -65,6 +71,7 @@ class Loader(torch.utils.data.Dataset):
 
 
 def prepare_comment(comment):
+    """ Prepare the comment text to make the prediction. """
     pre_loader = Loader(comment)
     loader = torch.utils.data.DataLoader(pre_loader, batch_size=1,
                                           shuffle=True, num_workers=0)
