@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
+""" Script that creates a virtual environment for the execution of our project. """
+
 import os
 import subprocess
 import venv
-import subprocess
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 
@@ -12,7 +13,7 @@ ROOT_PATH = os.path.dirname(__file__)
 
 def create_venv(args):
     """Function to create a virtual environment with venv"""
-    
+
     venv_path = os.path.join(ROOT_PATH, 'venv')
     req_path = os.path.join(ROOT_PATH, 'requirements.txt')
     src_path = os.path.join(ROOT_PATH, 'src')
@@ -32,11 +33,12 @@ def create_venv(args):
         print(f'Installing src package in the virtual environment {venv_path}')
     subprocess.call([f'{venv_path}/bin/pip', 'install', f'{src_path}'])
 
-           
+
 def main(args):
+    """ Main code: create venv. """
     create_venv(args)
 
-        
+
 if __name__ == "__main__":
 
     DESCRIPTION = """"""
