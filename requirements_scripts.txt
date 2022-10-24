@@ -1,0 +1,10 @@
+emoji==2.1.0
+fastapi==0.85.1
+langdetect==1.0.7
+mlflow==1.29.0
+numpy==1.23.1
+pandas==1.4.3
+scikit_learn==1.1.2
+setuptools==63.4.1
+torch==1.12.1
+transformers==4.22.1
